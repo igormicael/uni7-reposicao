@@ -19,8 +19,8 @@ public class PedidoService {
 	@Inject
 	private JMSContext context;
 	
-	@Resource(lookup="java:/jms/queue/pQueue")
-	private Queue pQueue;
+	@Resource(lookup="java:/jms/queue/rQueue")
+	private Queue rQueue;
 	
 	
 	@POST
@@ -28,7 +28,7 @@ public class PedidoService {
 	@Produces(MediaType.TEXT_HTML)
 	public Response criarPedido(String pedido) {
 		System.out.println(pedido);
-		context.createProducer().send(pQueue, pedido);
+		context.createProducer().send(rQueue, pedido);
 		System.out.println("Pedido enviado!");
 		return Response.ok().build();
 	}
