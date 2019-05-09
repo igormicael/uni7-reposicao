@@ -1,10 +1,14 @@
 package br.com.im;
 
+import javax.annotation.Resource;
 import javax.ejb.ActivationConfigProperty;
 import javax.ejb.MessageDriven;
+import javax.inject.Inject;
+import javax.jms.JMSContext;
 import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.MessageListener;
+import javax.jms.Queue;
 import javax.jms.TextMessage;
 
 @MessageDriven(activationConfig = {
@@ -12,6 +16,12 @@ import javax.jms.TextMessage;
 		@ActivationConfigProperty(propertyName = "destinationLoookup", propertyValue = "jms/queue/pQueue"),
 		@ActivationConfigProperty(propertyName = "destination", propertyValue = "jms/queue/pQueue") })
 public class ComprasMDB implements MessageListener {
+	
+	@Inject
+	private JMSContext context;
+	
+	@Resource(lookup="java:/jms/queue/rQueue")
+	private Queue rQueue;
 
 	@Override
 	public void onMessage(Message message) {
@@ -19,7 +29,8 @@ public class ComprasMDB implements MessageListener {
 			TextMessage tMsg = (TextMessage) message;
 			System.out.println("\nPedido Recebido:");
 			try {
-				System.out.println(tMsg.getText());
+				String pedido = tMsg.getText();
+				context.createProducer().send(rQueue, pedido);
 			} catch (JMSException e) {
 				e.printStackTrace();
 			}
