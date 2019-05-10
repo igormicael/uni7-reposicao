@@ -18,11 +18,12 @@
 				<artifactId>maven-ear-plugin</artifactId>
 				<version>3.0.1</version>
 				<configuration>
+					<defaultLibBundleDir>lib</defaultLibBundleDir>
 					<modules>
 						<ejbModule>
 							<groupId>br.com.im</groupId>
 							<artifactId>ejb</artifactId>
-							<uri>/ejb.jar</uri>
+							<uri>/repo.jar</uri>
 						</ejbModule>
 						<webModule>
 							<groupId>br.com.im</groupId>
@@ -31,6 +32,12 @@
 							<contextRoot>reposicao</contextRoot>
 						</webModule>
 					</modules>
+					<archive>
+						<manifest>
+							<addDefaultImplementationEntries>true
+							</addDefaultImplementationEntries>
+						</manifest>
+					</archive>
 				</configuration>
 			</plugin>
 			<plugin>
